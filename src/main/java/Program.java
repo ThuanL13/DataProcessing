@@ -59,7 +59,7 @@ public class Program {
         // Calculating average age
         double averageAge = (double) totalAge / people.size();
         // Showing Stats
-        System.out.println("\nStatistics");
+        System.out.println("\n=== Statistics ====");
         System.out.printf("Average Age: %.2f\n", averageAge);
         System.out.println("Oldest Age: " + oldestAge);
         System.out.println("Youngest Age: " + youngestAge);
