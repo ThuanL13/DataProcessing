@@ -28,7 +28,42 @@ public class Program {
         // New list to store matches
         List<Person> matches = new ArrayList<>();
         for (Person person : people) {
-
+            boolean firstNameMatches = person.getFirstName().equalsIgnoreCase(searchName);
+            boolean lastNameMatches = person.getLastName().equalsIgnoreCase(searchName);
+            if (firstNameMatches || lastNameMatches) { // If first OR last name matches
+                matches.add(person);
+            }
         }
+        System.out.println("\nSearch Results: ");
+        if (matches.size() > 0) { // Checks if any matches were found
+            for (Person person : matches) {
+                System.out.println(person);
+            }
+        } else {
+            System.out.println("No matches found.");
+        }
+        int totalAge = 0; //Variable to store total age
+        int oldestAge = people.get(0).getAge();
+
+        int youngestAge = people.get(0).getAge();
+        for (Person person : people) {
+            totalAge += person.getAge(); // Adds current person's age to total
+            if (person.getAge() > oldestAge); // If this person is older than current person
+            {
+                oldestAge = person.getAge();
+            }
+            if (person.getAge() < youngestAge) { // If this person is younger than current youngest
+                youngestAge = person.getAge();
+            }
+        }
+        // Calculating average age
+        double averageAge = (double) totalAge / people.size();
+        // Showing Stats
+        System.out.println("\nStatistics");
+        System.out.printf("Average Age: %.2f\n", averageAge);
+        System.out.println("Oldest Age: " + oldestAge);
+        System.out.println("Youngest Age: " + youngestAge);
+
+        read.close();
     }
 }
