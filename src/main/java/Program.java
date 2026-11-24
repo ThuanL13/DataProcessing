@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class Program {
     public static void main(String[] args) {
@@ -25,45 +26,72 @@ public class Program {
         System.out.println("Enter a first or last name to search: ");
         String searchName = read.nextLine();
 
-        // New list to store matches
-        List<Person> matches = new ArrayList<>();
-        for (Person person : people) {
-            boolean firstNameMatches = person.getFirstName().equalsIgnoreCase(searchName);
-            boolean lastNameMatches = person.getLastName().equalsIgnoreCase(searchName);
-            if (firstNameMatches || lastNameMatches) { // If first OR last name matches
-                matches.add(person);
-            }
-        }
-        System.out.println("\nSearch Results: ");
-        if (matches.size() > 0) { // Checks if any matches were found
-            for (Person person : matches) {
-                System.out.println(person);
-            }
-        } else {
-            System.out.println("No matches found.");
-        }
-        int totalAge = 0; //Variable to store total age
-        int oldestAge = people.get(0).getAge();
+//        // New list to store matches
+//        List<Person> matches = new ArrayList<>();
+//        for (Person person : people) {
+//            boolean firstNameMatches = person.getFirstName().equalsIgnoreCase(searchName);
+//            boolean lastNameMatches = person.getLastName().equalsIgnoreCase(searchName);
+//            if (firstNameMatches || lastNameMatches) { // If first OR last name matches
+//                matches.add(person);
+//            }
+//        }
+//        System.out.println("\nSearch Results: ");
+//        if (matches.size() > 0) { // Checks if any matches were found
+//            for (Person person : matches) {
+//                System.out.println(person);
+//            }
+//        } else {
+//            System.out.println("No matches found.");
+//        }
+//        int totalAge = 0; //Variable to store total age
+//        int oldestAge = people.get(0).getAge();
+//
+//        int youngestAge = people.get(0).getAge();
+//        for (Person person : people) {
+//            totalAge += person.getAge(); // Adds current person's age to total
+//            if (person.getAge() > oldestAge); // If this person is older than current person
+//            {
+//                oldestAge = person.getAge();
+//            }
+//            if (person.getAge() < youngestAge) { // If this person is younger than current youngest
+//                youngestAge = person.getAge();
+//            }
+//        }
+//        // Calculating average age
+//        double averageAge = (double) totalAge / people.size();
+//        // Showing Stats
+//        System.out.println("\n=== Statistics ====");
+//        System.out.printf("Average Age: %.2f\n", averageAge);
+//        System.out.println("Oldest Age: " + oldestAge);
+//        System.out.println("Youngest Age: " + youngestAge);
+//
+//        read.close();
 
-        int youngestAge = people.get(0).getAge();
-        for (Person person : people) {
-            totalAge += person.getAge(); // Adds current person's age to total
-            if (person.getAge() > oldestAge); // If this person is older than current person
-            {
-                oldestAge = person.getAge();
-            }
-            if (person.getAge() < youngestAge) { // If this person is younger than current youngest
-                youngestAge = person.getAge();
-            }
+        //Creating list using stream and filter
+        List<Person> matches = people.stream()
+                .filter(person ->
+                        person.getFirstName().equalsIgnoreCase(searchName) ||
+                                person.getLastName().equalsIgnoreCase(searchName)).collect(Collectors.toList());
+        System.out.println("\nSearch Results: ");
+        if (!matches.isEmpty()) {
+            matches.forEach(System.out::println);
+        }
+        else {
+            System.out.println("No matching people.");
         }
         // Calculating average age
-        double averageAge = (double) totalAge / people.size();
-        // Showing Stats
-        System.out.println("\n=== Statistics ====");
-        System.out.printf("Average Age: %.2f\n", averageAge);
-        System.out.println("Oldest Age: " + oldestAge);
-        System.out.println("Youngest Age: " + youngestAge);
+        double averageAge = people.stream()
+                .map(Person::getAge)//Converting Person objects into ages
+                .reduce(0, Integer :: sum) // Adds all ages together
+                / (double)people.size(); // Dividing by total amount of people
 
-        read.close();
+        // Finding oldest age
+        int oldestAge = people.stream()
+                .map(Person::getAge)
+                .reduce(Integer.MIN_VALUE, Integer :: max);
+        // Finding youngest age
+        int youngestAge = people.stream()
+                .map(Person::getAge)
+                .reduce(Integer.MAX_VALUE, Integer :: min);
     }
 }
