@@ -87,11 +87,19 @@ public class Program {
 
         // Finding oldest age
         int oldestAge = people.stream()
-                .map(Person::getAge)
-                .reduce(Integer.MIN_VALUE, Integer :: max);
+                .map(Person::getAge)//.map used for converting
+                .reduce(Integer.MIN_VALUE, Integer :: max); //.reduce combines elements into 1 result
         // Finding youngest age
         int youngestAge = people.stream()
                 .map(Person::getAge)
                 .reduce(Integer.MAX_VALUE, Integer :: min);
+
+        //Results
+        System.out.println("\nStatistics:");
+        System.out.printf("Average age: %.2f\n", averageAge);
+        System.out.println("Oldest age: " + oldestAge);
+        System.out.println("Youngest age: " + youngestAge);
+
+        read.close();
     }
 }
